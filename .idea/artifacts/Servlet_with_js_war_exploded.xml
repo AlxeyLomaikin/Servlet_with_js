@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Servlet_with_js:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Servlet_with_js_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Servlet_with_js/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Servlet_with_js" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
