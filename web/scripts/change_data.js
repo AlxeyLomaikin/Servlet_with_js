@@ -50,9 +50,10 @@ function edit_record(id){
     if (tr != null) {
         var fields = tr.getElementsByTagName('td');
         var childNum = tr.childElementCount;
+        var colNames = document.getElementsByTagName('th');
         for (var i = 1; i<childNum-1; i++){
-            fields[i].innerHTML = "<td><input type=text" +
-                " value='" + fields[i].textContent + "' onchange='check_input(this)'> </input></td>";
+            fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent + "' value='" +
+                fields[i].textContent + "' onchange='check_input(this)'> </input></td>";
         }
         fields[childNum-1].innerHTML = "<td><input type=button onclick='save_record(this)' value='OK'> </input></td>";
     }
@@ -62,9 +63,11 @@ function add_record(add_button){
     var tr = add_button.parentNode.parentNode;
     if (tr != null) {
         var fields = tr.getElementsByTagName('td');
+        var colNames = document.getElementsByTagName('th');
         var childNum = tr.childElementCount;
         for (var i = 1; i<childNum-1; i++){
-            fields[i].innerHTML = "<td><input type=text> </input></td>";
+            fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent +
+                "' onchange='check_input(this)'> </input></td>";
         }
         fields[childNum-1].innerHTML = "<td><input type=button onclick='save_record(this)' value='OK'> </input></td>";
     }
