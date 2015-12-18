@@ -165,7 +165,7 @@ public class sqlServlet extends GenericServlet {
         }
         else {
             w.println("<TEXTAREA name=query id=\"sql_area\" " +
-                    "onchange=\"check_query()\"  cols=90 rows=8>");
+                    "onchange=\"check_query())\" onfocus=\"check_query())\" cols=90 rows=8>");
         }
         if(sql != null && !isTableSelected) {
             w.print(sql);
@@ -325,8 +325,7 @@ public class sqlServlet extends GenericServlet {
                     }
 
                     if (isEditable){
-                        w.print("<td><input type=\"button\" value=edit onclick=\"highlight_tr(" +
-                                rs.getString("id") + "); edit_record(" +
+                        w.print("<td><input type=\"button\" value=edit onclick=\"highlight_tr(this); edit_record(" +
                                 rs.getString("id") + ")\"></input>&nbsp&nbsp");
                         w.print("<input type=button value=delete onclick=\"del_record("
                                 + rs.getString("id") + ")\"></input></td>");
@@ -339,7 +338,7 @@ public class sqlServlet extends GenericServlet {
                     w.print ("<tr>");
                     for (int i = 1; i <= colCount; i++)
                         w.println("<td> </td>");
-                    w.print("<td><input type=button value=\"add record\" onclick=\"add_record(this)\"></input></td>");
+                    w.print("<td><input type=button value=\"add record\" onclick=\"highlight_tr(this); add_record(this)\"></input></td>");
                     w.print("</tr>");
                 }
 

@@ -1,6 +1,6 @@
 
-function highlight_tr (id) {
-    var tr = document.getElementById('tr' + id);
+function highlight_tr (button) {
+    var tr = button.parentNode.parentNode;
     if (tr.className == 'active') {
         tr.className = '';
     }
