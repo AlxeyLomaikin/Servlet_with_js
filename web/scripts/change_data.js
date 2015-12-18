@@ -17,7 +17,7 @@ function submit_changes() {
 }
 
 function save_record(ok_button) {
-    var tr = ok_button.parentNode.parentNode;
+    var tr = ok_button.parentNode;
     var id = tr.id.substring(2);
     var fields = tr.getElementsByTagName('td');
     var columns = document.getElementsByTagName('th');
@@ -55,7 +55,9 @@ function edit_record(id){
             fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent + "' value='" +
                 fields[i].textContent + "' onchange='check_input(this)'> </input></td>";
         }
-        fields[childNum-1].innerHTML = "<td><input type=button onclick='save_record(this)' value='OK'> </input></td>";
+        var ok = document.createElement('td');
+        ok.innerHTML = "<input type=button onclick='save_record(this)' disabled value='OK'> </input>";
+        tr.replaceChild(ok.firstChild, fields[childNum-1]);
     }
 }
 
@@ -69,7 +71,9 @@ function add_record(add_button){
             fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent +
                 "' onchange='check_input(this)'> </input></td>";
         }
-        fields[childNum-1].innerHTML = "<td><input type=button onclick='save_record(this)' value='OK'> </input></td>";
+        var ok = document.createElement('td');
+        ok.innerHTML = "<td><input type=button onclick='save_record(this)' disabled value='OK'> </input></td>";
+        tr.replaceChild(ok.firstChild, fields[childNum-1]);
     }
 }
 
