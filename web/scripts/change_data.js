@@ -61,6 +61,7 @@ function edit_record(id){
         var cancel = document.createElement('input');
         cancel.innerHTML = "<input type=button onclick='form_submit()' value='cancel'> </input>";
         td.appendChild(ok.firstChild);
+        td.innerHTML+="&nbsp&nbsp&nbsp";
         td.appendChild(cancel.firstChild);
         tr.replaceChild(td, fields[childNum-1]);
     }
@@ -73,7 +74,7 @@ function add_record(add_button){
         var colNames = document.getElementsByTagName('th');
         var childNum = fields.length ;
         for (var i = 1; i < childNum-1; i++){
-            fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent +
+            fields[i].innerHTML = "<td><input required type=text id='" + colNames[i].textContent +
                 "' onchange='check_input(this)'> </input></td>";
         }
         var td = document.createElement('td');
