@@ -1,6 +1,6 @@
 function check_query() {
     var sql_area = document.getElementById('sql_area');
-    if (sql_area && sql_area.value != '') {
+    if ( sql_area && sql_area.value != '') {
         document.getElementById('send').disabled = false;
         return true;
     }
@@ -10,30 +10,27 @@ function check_query() {
     }
 }
 
-function hide_button(button, message){
-    alert(message);
-    button.disabled = true;
-}
-
 function check_input(input) {
     var tr = input.parentNode.parentNode;
     var inputs = tr.getElementsByTagName('input');
     var colCount = inputs.length;
-    var ok = inputs[colCount-1];
+    var ok = inputs [colCount-2];
     for (var i = 0; i < colCount-1; i++) {
-        if ((inputs[i].value == null) || (inputs[i].value == "")) {
-            hide_button(ok, "enter field '" + inputs[i].id + "' !");
+        if ( (inputs[i].value == null) || (inputs[i].value == "") ) {
+            ok.disabled = true;
             return false;
         }
         else if (inputs[i].id == "age") {
             var isInt = ( parseInt(inputs[i].value) == inputs[i].value );
             var isValid = ( isInt && (inputs[i].value >= 18) && (inputs[i].value < 100) );
             if (!isInt) {
-                hide_button(ok, "'age' must be integer!'");
+                ok.disabled = true;
+                alert("'age' must be integer!'");
                 return false;
             }
             else if (!isValid) {
-                hide_button(ok, "incorrect 'age'!'\n 18<=age<100");
+                ok.disabled = true;
+                alert ("incorrect 'age'!'\n 18<=age<100");
                 return false;
             }
         }

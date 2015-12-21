@@ -9,7 +9,7 @@ function highlight_tr (button) {
     }
 }
 
-function submit_changes() {
+function form_submit() {
     var form = document.getElementById('sql_form');
     if (form!=null) {
         form.submit();
@@ -17,11 +17,11 @@ function submit_changes() {
 }
 
 function save_record(ok_button) {
-    var tr = ok_button.parentNode;
+    var tr = ok_button.parentNode.parentNode;
     var id = tr.id.substring(2);
     var fields = tr.getElementsByTagName('td');
     var columns = document.getElementsByTagName('th');
-    var fieldCount = tr.childElementCount - 1;
+    var fieldCount = fields.length - 1;
 
     var form = document.getElementById('sql_form');
 
@@ -36,28 +36,33 @@ function save_record(ok_button) {
         form.appendChild(add.firstChild);
     }
 
-    for (var i=1; i<fieldCount; i++){
+    for (var i=1; i < fieldCount; i++){
         var field = document.createElement('input');
         field.innerHTML = "<input type=hidden name='" + columns[i].textContent +
             "' value='" + fields[i].firstChild.value + "'> </input>";
         form.appendChild(field.firstChild);
     }
-    submit_changes();
+    form_submit();
 }
 
 function edit_record(id){
     var tr = document.getElementById('tr' + id);
     if (tr != null) {
         var fields = tr.getElementsByTagName('td');
-        var childNum = tr.childElementCount;
+        var childNum = fields.length;
         var colNames = document.getElementsByTagName('th');
-        for (var i = 1; i<childNum-1; i++){
-            fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent + "' value='" +
+        for (var i = 1; i < childNum-1; i++){
+            fields[i].innerHTML = "<td><input required type=text id='" + colNames[i].textContent + "' value='" +
                 fields[i].textContent + "' onchange='check_input(this)'> </input></td>";
         }
-        var ok = document.createElement('td');
+        var td = document.createElement('td');
+        var ok = document.createElement('input');
         ok.innerHTML = "<input type=button onclick='save_record(this)' disabled value='OK'> </input>";
-        tr.replaceChild(ok.firstChild, fields[childNum-1]);
+        var cancel = document.createElement('input');
+        cancel.innerHTML = "<input type=button onclick='form_submit()' value='cancel'> </input>";
+        td.appendChild(ok.firstChild);
+        td.appendChild(cancel.firstChild);
+        tr.replaceChild(td, fields[childNum-1]);
     }
 }
 
@@ -66,14 +71,19 @@ function add_record(add_button){
     if (tr != null) {
         var fields = tr.getElementsByTagName('td');
         var colNames = document.getElementsByTagName('th');
-        var childNum = tr.childElementCount;
-        for (var i = 1; i<childNum-1; i++){
+        var childNum = fields.length ;
+        for (var i = 1; i < childNum-1; i++){
             fields[i].innerHTML = "<td><input type=text id='" + colNames[i].textContent +
                 "' onchange='check_input(this)'> </input></td>";
         }
-        var ok = document.createElement('td');
-        ok.innerHTML = "<td><input type=button onclick='save_record(this)' disabled value='OK'> </input></td>";
-        tr.replaceChild(ok.firstChild, fields[childNum-1]);
+        var td = document.createElement('td');
+        var ok = document.createElement('input');
+        ok.innerHTML = "<input type=button onclick='save_record(this)' disabled value='OK'> </input>";
+        var cancel = document.createElement('input');
+        cancel.innerHTML = "<input type=button onclick='form_submit()' value='cancel'> </input>";
+        td.appendChild(ok.firstChild);
+        td.appendChild(cancel.firstChild);
+        tr.replaceChild(td, fields[childNum-1]);
     }
 }
 

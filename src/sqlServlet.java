@@ -67,13 +67,14 @@ public class sqlServlet extends GenericServlet {
 
         String sql = servletRequest.getParameter("query");
         String use = servletRequest.getParameter("use");
-        String del_id = servletRequest.getParameter("del_id");
         String selectedTable = servletRequest.getParameter("selectedTab");
+        String del_id = servletRequest.getParameter("del_id");
         String edit_id = servletRequest.getParameter("edit_id");
         String add = servletRequest.getParameter("add");
 
         boolean isTableSelected = ( (selectedTable!=null) && (!selectedTable.equals("")) );
-        boolean needExecute = ( !(!curDatabase.equals("") && isTableSelected) && (del_id==null) && (sql != null) );
+        boolean hasQuery = ( (sql!=null) && (!sql.equals("")) );
+        boolean needExecute = ( !(!curDatabase.equals("") && isTableSelected) && hasQuery );
 
         if (use!=null)
             useDB("use "+ use + ";", w);
@@ -97,7 +98,7 @@ public class sqlServlet extends GenericServlet {
         for (int i=0;i<dbNames.size();i++){
 
             String href = "href=\"/sql?use=" + dbNames.get(i);
-            if (sql!=null)
+            if ( hasQuery )
                 href+="&query=" + sql;
             href+="\"";
 
@@ -110,17 +111,17 @@ public class sqlServlet extends GenericServlet {
         if ( isDatabaseSelected ) {
             ArrayList<String> tables = getTabNames(curDatabase);
             w.println("<p>Choose table:");
-            w.println("<p><select name=\"selectedTab\" onchange=\"submit_changes()\" form=sql_form>");
+            w.println("<p><select name=\"selectedTab\" onchange=\"form_submit()\" form=sql_form>");
             w.println("<option> </option>");
             for (String table : tables) {
-                if ((selectedTable != null) && (table.equals(selectedTable)))
+                if ( (selectedTable != null) && (table.equals(selectedTable)) )
                     w.println("<option selected>" + table + "</option>");
                 else
                     w.println("<option>" + table + "</option>");
             }
             w.println("</select>");
 
-            if (isTableSelected) {
+            if ( isTableSelected ) {
                 if (del_id != null && !del_id.equals(""))
                     executeUpdQuery("delete from " + selectedTable + " where id=\"" + del_id + "\";", w);
                 else if (add !=null && add.equals("true")){
@@ -131,7 +132,7 @@ public class sqlServlet extends GenericServlet {
                         if (columns.contains(key))
                             record.add(params.get(key)[0]);
                     }
-                    if (columns.size() - 1 == record.size()) {
+                    if ( columns.size() == record.size() + 1 ) {
                         String updQuery = "insert into doctor values (null, \"" + record.get(0) + "\", \""
                                 + record.get(1) + "\", \"" + record.get(2) + "\", \"" + record.get(3) + "\");";
                         executeUpdQuery(updQuery, w);
@@ -145,7 +146,7 @@ public class sqlServlet extends GenericServlet {
                         if (columns.contains(key))
                             record.add(params.get(key)[0]);
                     }
-                    if (columns.size() - 1 == record.size()) {
+                    if ( columns.size() == record.size() + 1 ) {
                         String updQuery = "update doctor set name=\""
                                 + record.get(0) + "\", surname=\"" + record.get(1) + "\", occupation=\"" +
                                 record.get(2) + "\", age=\"" + record.get(3) + "\" where id=\"" + edit_id + "\";";
@@ -167,7 +168,7 @@ public class sqlServlet extends GenericServlet {
             w.println("<TEXTAREA name=query id=\"sql_area\" " +
                     "onchange=\"check_query())\" onfocus=\"check_query())\" cols=90 rows=8>");
         }
-        if(sql != null && !isTableSelected) {
+        if( hasQuery && !isTableSelected ) {
             w.print(sql);
         }
 
@@ -299,7 +300,7 @@ public class sqlServlet extends GenericServlet {
                 rs = st.executeQuery(sql);
                 w.append("<p><table>");
 
-                if (!isEditable)
+                if ( !isEditable )
                     w.append("<caption><b>Result of selection :</b></caption>");
 
                 int colCount = rs.getMetaData().getColumnCount();
@@ -310,7 +311,7 @@ public class sqlServlet extends GenericServlet {
                     w.append("</th>");
                 }
 
-                if (isEditable){
+                if ( isEditable ){
                     w.append("<th>change data</th>");
                 }
 
@@ -324,7 +325,7 @@ public class sqlServlet extends GenericServlet {
                         w.append(td);
                     }
 
-                    if (isEditable){
+                    if ( isEditable ){
                         w.print("<td><input type=\"button\" value=edit onclick=\"highlight_tr(this); edit_record(" +
                                 rs.getString("id") + ")\"></input>&nbsp&nbsp");
                         w.print("<input type=button value=delete onclick=\"del_record("
@@ -334,7 +335,7 @@ public class sqlServlet extends GenericServlet {
                     w.append("</tr>");
                 }
 
-                if (isEditable){
+                if ( isEditable ){
                     w.print ("<tr>");
                     for (int i = 1; i <= colCount; i++)
                         w.println("<td> </td>");
