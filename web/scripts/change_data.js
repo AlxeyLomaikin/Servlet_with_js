@@ -83,6 +83,7 @@ function add_record(add_button){
         var cancel = document.createElement('input');
         cancel.innerHTML = "<input type=button onclick='form_submit()' value='cancel'> </input>";
         td.appendChild(ok.firstChild);
+        td.innerHTML+="&nbsp&nbsp&nbsp";
         td.appendChild(cancel.firstChild);
         tr.replaceChild(td, fields[childNum-1]);
     }

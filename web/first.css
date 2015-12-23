@@ -9,7 +9,8 @@ tr {background-color: white}
 tr:hover {background-color: yellow}
 
 tr.header {background-color: silver}
-tr.active {background-color: green}
+tr.active {background-color: #51f3e3
+}
 
 td {padding: 5px; border: 1px solid black}
 th {padding: 5px; border: 1px solid black}
