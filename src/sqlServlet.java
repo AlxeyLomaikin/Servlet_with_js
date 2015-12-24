@@ -141,17 +141,19 @@ public class sqlServlet extends GenericServlet {
                 else if (edit_id != null && !edit_id.equals("")) {
                     Map<String, String[]> params = servletRequest.getParameterMap();
                     ArrayList<String> record = new ArrayList<>();
-                    ArrayList<String> columns = getColumns(selectedTable);
-                    for (String key : params.keySet()) {
-                        if (columns.contains(key))
+                    ArrayList<String> tabColumns = getColumns(selectedTable);
+                    ArrayList<String> changedColumns = new ArrayList<>();
+                    for (String key : params.keySet())
+                        if (tabColumns.contains(key) && !key.equals("id")) {
+                            changedColumns.add(key);
                             record.add(params.get(key)[0]);
+                        }
+                    String updQuery = "update doctor set ";
+                    for (int i=0; i<record.size(); i++){
+                        updQuery+=changedColumns.get(i) + "=\"" + record.get(i) + "\", ";
                     }
-                    if ( columns.size() == record.size() + 1 ) {
-                        String updQuery = "update doctor set name=\""
-                                + record.get(0) + "\", surname=\"" + record.get(1) + "\", occupation=\"" +
-                                record.get(2) + "\", age=\"" + record.get(3) + "\" where id=\"" + edit_id + "\";";
-                        executeUpdQuery(updQuery, w);
-                    } else queryResult.add("Wrong options!");
+                    updQuery = updQuery.substring(0, updQuery.length()-2) + "where id=" + edit_id + ";";
+                    executeUpdQuery(updQuery, w);
                 }
                 printSelectedTable(selectedTable, w);
             }
