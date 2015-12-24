@@ -133,10 +133,15 @@ public class sqlServlet extends GenericServlet {
                             record.add(params.get(key)[0]);
                     }
                     if ( columns.size() == record.size() + 1 ) {
-                        String updQuery = "insert into doctor values (null, \"" + record.get(0) + "\", \""
-                                + record.get(1) + "\", \"" + record.get(2) + "\", \"" + record.get(3) + "\");";
+                        String updQuery = "insert into doctor values (null, ";
+                        for (String field: record){
+                            updQuery += "\"" + field + "\", ";
+                        }
+                        updQuery = updQuery.substring(0, updQuery.length()-2);
+                        updQuery+=");";
                         executeUpdQuery(updQuery, w);
-                    } else queryResult.add("Wrong options!");
+                    }
+                    else queryResult.add("Wrong options!");
                 }
                 else if (edit_id != null && !edit_id.equals("")) {
                     Map<String, String[]> params = servletRequest.getParameterMap();
